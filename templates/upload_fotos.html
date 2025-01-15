@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<title>Selecionar Imagens</title>
+	<!-- Incluindo Bootstrap e jQuery -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<!-- Estilos customizados -->
+	<style>
+		/* Estilo para o popup */
+		@media (max-width: 576px) {
+			#popup .modal-body img {
+			  max-width: 80%;
+			}
+			#popup .modal-body p {
+			  font-size: 14px;
+			}
+		}
+		#popup {
+			display: block;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5);
+			z-index: 9999;
+		}
+		#popup .modal-dialog {
+			margin-top: 5%;
+		}
+		/* Estilo para o formulário */
+		#form {
+			margin-top: 20px;
+		}
+		#form label {
+			margin-right: 10px;
+		}
+		/* Estilo para o botão de enviar */
+		#enviar {
+			margin-top: 20px;
+		}
+	</style>
+	<!-- Script para mostrar o popup -->
+	<script>
+		$(document).ready(function() {
+			// Mostrar o popup inicial
+			$("#popup").modal({backdrop: "static", keyboard: false});
+		});
+	</script>
+</head>
+<body>
+	<!-- Popup inicial -->
+	<div id="popup">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Selecione suas imagens</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<p>Selecione até 5 imagens que identificam o seu problema. As imagens devem estar em formato JPG ou PNG e ter no máximo 5 MB cada uma.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Continuar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Formulário com seletores de imagens e botão de enviar -->
+	<div class="container" id="form">
+		<form>
+			<div class="form-group">
+				<label for="imagem1">Imagem 1:</label>
+				<input type="file" class="form-control-file" id="imagem1" accept="image/*" capture>
+			</div>
+			<div class="form-group">
+				<label for="imagem2">Imagem 2:</label>
+				<input type="file" class="form-control-file" id="imagem2" accept="image/*" capture>
+			</div>
+            <div class="form-group">
+				<label for="imagem3">Imagem 3:</label>
+				<input type="file" class="form-control-file" id="imagem3" accept="image/*" capture>
+			</div>
+            <div class="form-group">
+				<label for="imagem4">Imagem 4:</label>
+				<input type="file" class="form-control-file" id="imagem4" accept="image/*" capture>
+			</div>
+            <div class="form-group">
+				<label for="imagem5">Imagem 5:</label>
+				<input type="file" class="form-control-file" id="imagem5" accept="image/*" capture>
+			</div>
+            <input type="hidden" name="id_tarefa" value="{{ id_tarefa }}">
+			<button type="submit" class="btn btn-primary" id="enviar">Enviar</button>
+		</form>
+	</div>
+	<script>
+		document.querySelector('#form form').addEventListener('submit', function(event) {
+			// Impede o comportamento padrão de envio do formulário
+			event.preventDefault();
+	
+			// Obtém os arquivos selecionados pelos campos de entrada do tipo file
+			let imagem1 = document.querySelector('#imagem1').files[0];
+			let imagem2 = document.querySelector('#imagem2').files[0];
+      let imagem3 = document.querySelector('#imagem3').files[0];
+      let imagem4 = document.querySelector('#imagem4').files[0];
+      let imagem5 = document.querySelector('#imagem5').files[0];
+	
+			// Cria um objeto FormData para armazenar os arquivos
+			let formData = new FormData();
+			formData.append('imagem1', imagem1);
+			formData.append('imagem2', imagem2);
+            formData.append('imagem3', imagem3);
+            formData.append('imagem4', imagem4);
+            formData.append('imagem5', imagem5);
+
+			// Envia o nome e motivo
+			let id_tarefa = document.querySelector('input[name="id_tarefa"]').value;
+			formData.append('id_tarefa', id_tarefa);
+	
+			// Envia os arquivos para a sua função Flask usando uma solicitação AJAX
+			fetch('/salva_fotos', {
+				method: 'POST',
+				body: formData
+			})
+			.then(response => response.text())
+			.then(data => {
+				// Faz algo com a resposta da sua função Flask
+				console.log(data);
+				alert("Imagens enviadas com sucesso. Aguarde o contato de nossa equipe.");
+				window.close();
+			});
+		});
+	</script>
+</body>
+</html>
