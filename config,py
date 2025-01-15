@@ -1,0 +1,3 @@
+memory = []
+user_tokens = {}
+email_validado = {}
