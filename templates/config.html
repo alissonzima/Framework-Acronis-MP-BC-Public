@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+    <title>Configuração</title>
+</head>
+<body>
+    <h1>Configuração</h1>
+    <form method="POST" action="{{ url_for('routes_bc_bp.config_salva') }}">
+        <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>Nome</th>
+                <th>Qtd PC</th>
+                <th>Qtd Mobile</th>
+                <th>Qtd Server</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for licenca in licencas %}
+              <tr>
+                <td><input type="text" name="{{ licenca.id }}_id" value="{{ licenca.id }}" readonly hidden></td>
+                <td><input style="max-width: 100px;" type="text" name="{{ licenca.id }}_nome" value="{{ licenca.nome }}" readonly></td>
+                <td><input style="max-width: 75px;" type="text" name="{{ licenca.id }}_qtd_pc" value="{{ licenca.qtd_pc }}"></td>
+                <td><input style="max-width: 75px;" type="text" name="{{ licenca.id }}_qtd_mobile" value="{{ licenca.qtd_mobile }}"></td>
+                <td><input style="max-width: 75px;" type="text" name="{{ licenca.id }}_qtd_server" value="{{ licenca.qtd_server }}"></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>Nome</th>
+                <th>Qtd Autent</th>
+                <th>Qtd Assinat</th>
+                <th>Qtd Template</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for notary in notarys %}
+              <tr>
+                <td><input type="text" name="{{ notary.id }}_id" value="{{ notary.id }}" readonly hidden></td>
+                <td><input style="max-width: 100px;" type="text" name="{{ notary.id }}_nome" value="{{ notary.nome }}" readonly></td>
+                <td><input style="max-width: 75px;" type="text" name="{{ notary.id }}_qtd_autenticacao" value="{{ notary.qtd_autenticacao }}"></td>
+                <td><input style="max-width: 75px;" type="text" name="{{ notary.id }}_qtd_assinatura" value="{{ notary.qtd_assinatura }}"></td>
+                <td><input style="max-width: 75px;" type="text" name="{{ notary.id }}_qtd_template" value="{{ notary.qtd_template }}"></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Nome</th>
+                    <th>(Gb)</th>
+                    <th>Cobrança</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plano in planos %}
+                <tr>
+                    <td><input type="text" name="{{ plano.id }}_id" value="{{ plano.id }}" readonly hidden></td>
+                    <td><input style="min-width: 200px;" type="text" value="{{plano.nome}}" name="{{ plano.id }}_nome" readonly ></td>
+                    <td><input style="max-width: 50px;" type="text" value="{{plano.volume}}" name="{{ plano.id }}_volume" readonly ></td>
+                    <td><input style="max-width: 80px;" type="text" value="{{plano.cobranca}}" name="{{ plano.id }}_cobranca" readonly ></td>
+                    <td><input style="max-width: 80px;" type="text" value="{{plano.valor}}" name="{{ plano.id }}_valor"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+</html>
